@@ -1,0 +1,12 @@
+400 Bad Request
+{
+  "code" : 400,
+  "errors" : [ {
+    "domain" : "fusiontables",
+    "location" : "q",
+    "locationType" : "parameter",
+    "message" : "Invalid query: Column `daatum' does not exist",
+    "reason" : "badQueryCouldNotParse"
+  } ],
+  "message" : "Invalid query: Column `daatum' does not exist"
+}
