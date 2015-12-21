@@ -24,7 +24,7 @@ import cg.common.check.Check;
 import cg.common.core.Logging;
 import cg.common.http.HttpStatus;
 import interfaces.Connector;
-import main.java.fusiontables.deserialize.GftResponseData;
+import main.java.fusiontables.deserialize.GftResponseJson;
 import structures.ColumnInfo;
 import structures.QueryResult;
 import structures.TableInfo;
@@ -288,7 +288,7 @@ public class FusionTablesConnector implements Connector {
 		
 		ObjectMapper jsonmapper = new ObjectMapper();
 		try {
-			GftResponseData data = jsonmapper.readValue(json, GftResponseData.class);
+			GftResponseJson data = jsonmapper.readValue(json, GftResponseJson.class);
 			return new QueryResult(HttpStatus.SC_OK, new DefaultTableModel(data.rows, data.columns), null);
 		} catch (IOException e) {
 			return createErrorResult(HttpStatus.SC_METHOD_FAILURE, e.getMessage());

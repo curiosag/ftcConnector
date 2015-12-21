@@ -36,7 +36,7 @@ public class TestDeserializeGftJson {
 		QueryResult dsResult = FusionTablesConnector.deserializeGftJson(json);
 		assertNotNull(dsResult.data);
 		assertEquals(HttpStatus.SC_OK, dsResult.status);
-		assertFalse(dsResult.errorInfo.isPresent());
+		assertFalse(dsResult.message.isPresent());
 		assertTrue(dsResult.data.isPresent());
 		TableModel data = dsResult.data.get();
 
@@ -68,7 +68,7 @@ public class TestDeserializeGftJson {
 		QueryResult dsResult = FusionTablesConnector.deserializeGftJson(json);
 		assertNotNull(dsResult.data);
 		assertEquals(HttpStatus.SC_BAD_REQUEST, dsResult.status);
-		assertTrue(dsResult.errorInfo.isPresent());
+		assertTrue(dsResult.message.isPresent());
 		assertFalse(dsResult.data.isPresent());
 	}
 	
