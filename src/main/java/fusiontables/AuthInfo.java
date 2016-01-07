@@ -1,12 +1,18 @@
 package main.java.fusiontables;
 
-public class AuthInfo {
-  public final String clientId;
-  public final String clientSecret;
+import util.StringUtil;
 
-  public AuthInfo(String clientId, String clientSecret) {
-      this.clientId = clientId;
-      this.clientSecret = clientSecret;
-  }
+public class AuthInfo {
+	public final String clientId;
+	public final String clientSecret;
+
+	public AuthInfo(String clientId, String clientSecret) {
+		this.clientId = clientId;
+		this.clientSecret = clientSecret;
+	}
+
+	public boolean credentialsPlausible() {
+		return !(StringUtil.emptyOrNull(clientId) || StringUtil.emptyOrNull(clientSecret));
+	}
 
 }

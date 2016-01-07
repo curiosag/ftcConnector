@@ -17,7 +17,7 @@ public class FusionTablesSampleRefactored {
   public static void main(String[] args) {
     try {
       Optional<AuthInfo> noAuth = Optional.absent(); 
-      connector = new FusionTablesConnector(new SystemLogger(), noAuth);
+      connector = new FusionTablesConnector(new SystemLogger(), noAuth, FusionTablesSampleRefactored.class);
      
       listTables();
       
