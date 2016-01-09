@@ -52,7 +52,7 @@ public class FusionTablesSample {
    * Be sure to specify the name of your application. If the application name is {@code null} or
    * blank, the application will log a warning. Suggested format is "MyCompany-ProductName/1.0".
    */
-  private static final String APPLICATION_NAME = "FutC";
+  private static final String APPLICATION_NAME = "FusionTablesSample";
 
   /** Directory to store user credentials. */
   private static final java.io.File DATA_STORE_DIR =

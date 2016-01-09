@@ -10,7 +10,6 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.fusiontables.Fusiontables;
 import com.google.api.services.fusiontables.Fusiontables.Query.Sql;
 import com.google.api.services.fusiontables.Fusiontables.Table.Delete;
@@ -18,7 +17,6 @@ import com.google.api.services.fusiontables.FusiontablesScopes;
 import com.google.api.services.fusiontables.model.Column;
 import com.google.api.services.fusiontables.model.Sqlresponse;
 import com.google.api.services.fusiontables.model.Table;
-import com.google.api.services.fusiontables.model.TableList;
 import com.google.common.base.Optional;
 
 import cg.common.check.Check;
@@ -62,9 +60,6 @@ public class FusionTablesConnector implements Connector {
 	private Optional<Fusiontables> fusiontables;
 
 	private final Logging logger;
-
-	private static final java.io.File DATA_STORE_DIR = new java.io.File(System.getProperty("user.home"),
-			".store/fusion_tables_sample");
 
 	public FusionTablesConnector(Logging logger, Optional<AuthInfo> authInfo, Class<?> dataStoreCarrierNode) {
 		Check.notNull(authInfo);
@@ -156,11 +151,15 @@ public class FusionTablesConnector implements Connector {
 		try {
 			for (Table t : fusiontables.get().table().list().execute().getItems())
 				result.add(new TableInfo(t.getName(), t.getTableId(), t.getDescription(), getColumns(t)));
-
 		} catch (IOException ex) {
 			log(ex.getMessage());
 		} catch (NullPointerException ex) {
-			log("not connected");
+			// there is no obvious way to determine if this succeeded
+			// execute() returns a TableList t where t.isEmpty() == false
+			// and getItems() still throws a NullPointerException 
+			// behaves the same, if the network connection is gone
+			// or network is ok, but there are no tables at all
+			log("no network connection or there are no tables at all");
 		}
 
 		reportDuplicates(result);
