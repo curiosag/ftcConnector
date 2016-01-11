@@ -26,6 +26,7 @@ import interfaces.Connector;
 import main.java.fusiontables.deserialize.GftResponseJson;
 import structures.ClientSettings;
 import structures.ColumnInfo;
+import structures.ConnectionStatus;
 import structures.QueryResult;
 import structures.TableInfo;
 
@@ -78,12 +79,12 @@ public class FusionTablesConnector implements Connector {
 
 	}
 
-	public void reset(Dictionary<String, String> connectionInfo) {
-		reset(Optional.of(new AuthInfo(connectionInfo.get(ClientSettings.keyClientId),
+	public ConnectionStatus reset(Dictionary<String, String> connectionInfo) {
+		return reset(Optional.of(new AuthInfo(connectionInfo.get(ClientSettings.keyClientId),
 				connectionInfo.get(ClientSettings.keyClientSecret))));
 	}
 
-	public void reset(Optional<AuthInfo> authInfo) {
+	public ConnectionStatus reset(Optional<AuthInfo> authInfo) {
 		String authInfoJSon = "{\"installed\":{\"client_id\":\"%s\",\"auth_uri\":\"https://accounts.google.com/o/oauth2/auth\",\"token_uri\":\"https://accounts.google.com/o/oauth2/token\",\"auth_provider_x509_cert_url\":\"https://www.googleapis.com/oauth2/v1/certs\",\"client_secret\":\"%s\",\"redirect_uris\":[\"urn:ietf:wg:oauth:2.0:oob\",\"http://localhost\"]}}";
 
 		if (dataStoreFactory == null)
@@ -91,7 +92,7 @@ public class FusionTablesConnector implements Connector {
 
 		if (authInfo.isPresent() && !authInfo.get().credentialsPlausible()) {
 			fusiontables = Optional.absent();
-			return;
+			return new ConnectionStatus(HttpStatus.SC_BAD_REQUEST, "incomplete credentials");
 		}
 
 		Reader authStream;
@@ -104,18 +105,20 @@ public class FusionTablesConnector implements Connector {
 		}
 
 		Credential credential = null;
+		ConnectionStatus result;
 		try {
-			logger.Info("trying to authorize");
 			credential = authorize(authStream);
-			logger.Info("authorization succeeded");
+			result = new ConnectionStatus(HttpStatus.SC_OK);
 		} catch (Exception e) {
 			logger.Error("Failed to authorize: " + e.getMessage());
 			fusiontables = Optional.absent();
+			result = new ConnectionStatus(e);
 		}
 
 		fusiontables = Optional.of(new Fusiontables.Builder(httpTransport, JSON_FACTORY, credential)
 				.setApplicationName(APPLICATION_NAME).build());
 
+		return result;
 	}
 
 	private void log(String msg) {
