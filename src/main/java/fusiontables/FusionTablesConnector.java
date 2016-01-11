@@ -152,7 +152,7 @@ public class FusionTablesConnector implements Connector {
 			for (Table t : fusiontables.get().table().list().execute().getItems())
 				result.add(new TableInfo(t.getName(), t.getTableId(), t.getDescription(), getColumns(t)));
 		} catch (IOException ex) {
-			log(ex.getMessage());
+			log("IOException: " + ex.getMessage());
 		} catch (NullPointerException ex) {
 			// there is no obvious way to determine if this succeeded
 			// execute() returns a TableList t where t.isEmpty() == false
