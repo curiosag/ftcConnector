@@ -1,6 +1,6 @@
 package main.java.fusiontables;
 
-import util.StringUtil;
+import org.cg.common.util.StringUtil;
 
 public class AuthInfo {
 	public final String clientId;

@@ -14,7 +14,7 @@
 
 package main.java.fusiontables;
 
-import structures.TableInfo;
+import org.cg.ftc.shared.structures.TableInfo;
 
 /**
  * Utility methods to print to the command line.

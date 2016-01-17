@@ -7,17 +7,16 @@ import java.util.List;
 
 import javax.swing.table.TableModel;
 
+import org.cg.common.http.HttpStatus;
+import org.cg.common.io.FileUtil;
+import org.cg.ftc.shared.structures.QueryResult;
 import org.junit.Test;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 
-import cg.common.check.Check;
-import cg.common.http.HttpStatus;
-import cg.common.io.FileUtil;
 import main.java.fusiontables.FusionTablesConnector;
-import structures.QueryResult;
+
 
 public class TestDeserializeGftJson {
 

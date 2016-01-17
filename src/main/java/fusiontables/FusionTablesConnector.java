@@ -1,5 +1,26 @@
 package main.java.fusiontables;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.swing.table.DefaultTableModel;
+
+import org.cg.common.check.Check;
+import org.cg.common.core.Logging;
+import org.cg.common.http.HttpStatus;
+import org.cg.ftc.shared.interfaces.*;
+import org.cg.ftc.shared.structures.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -19,33 +40,7 @@ import com.google.api.services.fusiontables.model.Sqlresponse;
 import com.google.api.services.fusiontables.model.Table;
 import com.google.common.base.Optional;
 
-import cg.common.check.Check;
-import cg.common.core.Logging;
-import cg.common.http.HttpStatus;
-import interfaces.Connector;
 import main.java.fusiontables.deserialize.GftResponseJson;
-import structures.ClientSettings;
-import structures.ColumnInfo;
-import structures.ConnectionStatus;
-import structures.QueryResult;
-import structures.TableInfo;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.swing.table.DefaultTableModel;
-
-import org.mortbay.log.Log;
 
 public class FusionTablesConnector implements Connector {
 
@@ -224,7 +219,7 @@ public class FusionTablesConnector implements Connector {
 	@Override
 	public void deleteTable(String tableId) throws IOException {
 		if (!fusiontables.isPresent()) {
-			Log.info(NOT_CONNECTED);
+			logger.Info(NOT_CONNECTED);
 			return;
 		}
 

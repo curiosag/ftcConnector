@@ -3,12 +3,12 @@ package main.java.fusiontables;
 import com.google.api.client.util.DateTime;
 import com.google.common.base.Optional;
 
-import cg.common.core.SystemLogger;
-import structures.TableInfo;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import org.cg.common.core.SystemLogger;
+import org.cg.ftc.shared.structures.TableInfo;
 
 public class FusionTablesSampleRefactored {
 
@@ -16,7 +16,7 @@ public class FusionTablesSampleRefactored {
 
   public static void main(String[] args) {
     try {
-      Optional<AuthInfo> noAuth = Optional.absent(); 
+      Optional<AuthInfo> noAuth = Optional.of(new AuthInfo("1002359378366-ipnetharogqs3pmhf9q35ov4m14l6014.apps.googleusercontent.com", "wJWwr-FbTNtyCLhHvXE5mCo6")); 
       connector = new FusionTablesConnector(new SystemLogger(), noAuth, FusionTablesSampleRefactored.class);
      
       listTables();
