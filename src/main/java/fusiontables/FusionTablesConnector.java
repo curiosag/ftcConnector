@@ -46,7 +46,7 @@ public class FusionTablesConnector implements Connector {
 
 	private final Map<String, String> tableNamesToIds = new HashMap<String, String>();
 
-	private final String APPLICATION_NAME = "GFT scratchpad";
+	private final String APPLICATION_NAME = "fusion tables console";
 	private final String NOT_CONNECTED = "not connected";
 
 	private PreferencesDataStoreFactory dataStoreFactory = null;
@@ -85,19 +85,15 @@ public class FusionTablesConnector implements Connector {
 		if (dataStoreFactory == null)
 			dataStoreFactory = new PreferencesDataStoreFactory(dataStoreCarrierNode);
 
-		if (authInfo.isPresent() && !authInfo.get().credentialsPlausible()) {
+		if (!authInfo.isPresent() || authInfo.isPresent() && !authInfo.get().credentialsPlausible()) {
 			fusiontables = Optional.absent();
 			return new ConnectionStatus(HttpStatus.SC_BAD_REQUEST, "incomplete credentials");
 		}
 
 		Reader authStream;
-		if (authInfo.isPresent()) {
-			authStream = new StringReader(
-					String.format(authInfoJSon, authInfo.get().clientId, authInfo.get().clientSecret));
-		} else {
-			String path = "/client_secrets.json";
-			authStream = new InputStreamReader(FusionTablesSample.class.getResourceAsStream(path));
-		}
+
+		authStream = new StringReader(
+				String.format(authInfoJSon, authInfo.get().clientId, authInfo.get().clientSecret));
 
 		Credential credential = null;
 		ConnectionStatus result;
@@ -154,7 +150,7 @@ public class FusionTablesConnector implements Connector {
 		} catch (NullPointerException ex) {
 			// there is no obvious way to determine if this succeeded
 			// execute() returns a TableList t where t.isEmpty() == false
-			// and getItems() still throws a NullPointerException 
+			// and getItems() still throws a NullPointerException
 			// behaves the same, if the network connection is gone
 			// or network is ok, but there are no tables at all
 			log("no network connection or there are no tables at all");

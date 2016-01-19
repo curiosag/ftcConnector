@@ -1,4 +1,0 @@
-{
-  "columns" : [ "Date", "willhaben", "bazar", "jobwohnen", "total" ],
-  "kind" : "sqlresponse"
-}
